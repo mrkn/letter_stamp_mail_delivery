@@ -4,9 +4,9 @@ require File.expand_path('../lib/letter_stamp_mail_delivery/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Kenta Murata"]
   gem.email         = ["mrkn@cookpad.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.description   = %q{Mail delivery method to save delivered mails with filenames that allows us to easily recognize the location at which mails are delivered.}
+  gem.summary       = %q{Mail delivery method for saving mails with filenames of posting locations}
+  gem.homepage      = "http://github.com/mrkn/letter_stamp_mail_delivery"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
