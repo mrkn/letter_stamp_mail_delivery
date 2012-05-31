@@ -20,7 +20,20 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### for RSpec
+
+```ruby
+require 'letter_stamp_mail_delivery'
+require 'letter_stamp_mail_delivery/rspec_support'
+
+RSpec.configure do |config|
+  LetterStampMailDelivery::RSpecSupport.install(config)
+end
+```
+
+### for test-unit
+
+Not supported yet.
 
 ## Contributing
 
