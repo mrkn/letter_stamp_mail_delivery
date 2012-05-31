@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "letter_stamp_mail_delivery"
   gem.require_paths = ["lib"]
   gem.version       = LetterStampMailDelivery::VERSION
+
+  gem.add_development_dependency('rspec', '~> 2.10.0')
 end
