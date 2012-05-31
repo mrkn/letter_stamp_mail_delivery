@@ -8,6 +8,9 @@ module LetterStampMailDelivery
       attr_accessor :filename
     end
 
+    def self.start
+    end
+
     def initialize(settings)
       super
       self.settings = {
