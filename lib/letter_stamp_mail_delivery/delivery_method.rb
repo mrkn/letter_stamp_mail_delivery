@@ -14,7 +14,7 @@ module LetterStampMailDelivery
     def initialize(settings)
       super
       self.settings = {
-        :location => "#{tmpdir}/letter_stamp_mails",
+        :delivery_location => "#{tmpdir}/letter_stamp_mails",
       }.update(settings)
     end
 
@@ -30,8 +30,8 @@ module LetterStampMailDelivery
     end
 
     def generate_filename
-      if self.class.filename && settings[:location]
-        "#{settings[:location]}/#{self.class.filename}"
+      if self.class.filename && settings[:delivery_location]
+        "#{settings[:delivery_location]}/#{self.class.filename}"
       end
     end
 

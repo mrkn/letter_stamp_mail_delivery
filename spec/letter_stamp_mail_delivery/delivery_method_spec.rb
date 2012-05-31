@@ -14,7 +14,7 @@ module LetterStampMailDelivery
       end
     end
 
-    shared_context "initialize without :location" do
+    shared_context "initialize without :delivery_location" do
       before :each do
         Mail.defaults do
           delivery_method DeliveryMethod
@@ -22,10 +22,11 @@ module LetterStampMailDelivery
       end
     end
 
-    shared_context "initialize with :location" do
+    shared_context "initialize with :delivery_location" do
       before :each do
         Mail.defaults do
-          delivery_method DeliveryMethod, :location => "#{Dir.pwd}/tmp/mails"
+          delivery_method DeliveryMethod,
+            :delivery_location => "#{Dir.pwd}/tmp/mails"
         end
       end
     end
@@ -46,7 +47,7 @@ module LetterStampMailDelivery
     end
 
     context "just initialized" do
-      include_context "initialize without :location"
+      include_context "initialize without :delivery_location"
 
       describe ".deliveries" do
         subject { described_class.deliveries }
@@ -55,14 +56,14 @@ module LetterStampMailDelivery
       end
     end
 
-    context "initialize without :location parameter" do
+    context "initialize without :delivery_location parameter" do
       include_context "setup and enter temporary directory"
 
-      describe "#settings[:location]" do
-        subject { Mail.delivery_method.settings[:location] }
+      describe "#settings[:delivery_location]" do
+        subject { Mail.delivery_method.settings[:delivery_location] }
 
         context "Rails isn't defined" do
-          include_context "initialize without :location"
+          include_context "initialize without :delivery_location"
 
           it "should have the correct temporary directory" do
             subject.should eq("#{Dir.tmpdir}/letter_stamp_mails")
@@ -79,7 +80,7 @@ module LetterStampMailDelivery
             Object.send(:remove_const, :Rails) if ::Rails.is_a?(::RSpec::Mocks::Mock)
           end
 
-          include_context "initialize without :location"
+          include_context "initialize without :delivery_location"
 
           it "should have \"\#{Rails.root}/tmp/letter_stamp_mails\"" do
             subject.should eq("#{::Rails.root}/tmp/letter_stamp_mails")
@@ -88,12 +89,12 @@ module LetterStampMailDelivery
       end
     end
 
-    context "initialize with :location parameter" do
+    context "initialize with :delivery_location parameter" do
       include_context "setup and enter temporary directory"
-      include_context "initialize with :location"
+      include_context "initialize with :delivery_location"
 
-      describe "#settings[:location]" do
-        subject { Mail.delivery_method.settings[:location] }
+      describe "#settings[:delivery_location]" do
+        subject { Mail.delivery_method.settings[:delivery_location] }
 
         it "should have the value specified at the initialization" do
           subject.should eq("#{Dir.pwd}/tmp/mails")
@@ -118,7 +119,7 @@ module LetterStampMailDelivery
 
     context "do not set filename" do
       include_context "setup and enter temporary directory"
-      include_context "initialize with :location"
+      include_context "initialize with :delivery_location"
 
       it "should not save an email as a file" do
         mail = Mail.new do
@@ -134,7 +135,7 @@ module LetterStampMailDelivery
 
     context "filename is given" do
       include_context "setup and enter temporary directory"
-      include_context "initialize with :location"
+      include_context "initialize with :delivery_location"
 
       before :each do
         DeliveryMethod.filename = "foo.eml"
