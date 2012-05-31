@@ -29,9 +29,13 @@ module LetterStampMailDelivery
       defined?(::Rails) ? "#{::Rails.root}/tmp" : Dir.tmpdir
     end
 
+    def delivery_location
+      settings[:delivery_location]
+    end
+
     def generate_filename
-      if self.class.filename && settings[:delivery_location]
-        "#{settings[:delivery_location]}/#{self.class.filename}"
+      if self.class.filename && delivery_location
+        "#{delivery_location}/#{self.class.filename}"
       end
     end
 
