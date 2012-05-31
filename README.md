@@ -1,6 +1,8 @@
 # LetterStampMailDelivery
 
-TODO: Write a gem description
+[![Build Status](https://secure.travis-ci.org/mrkn/letter_stamp_mail_delivery.png?branch=master)](http://travis-ci.org/mrkn/letter_stamp_mail_delivery)
+
+Mail delivery method to save delivered mails with filenames that allows us to easily recognize the location at which mails are delivered.
 
 ## Installation
 
