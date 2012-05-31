@@ -5,7 +5,7 @@ require 'fileutils'
 module LetterStampMailDelivery
   class DeliveryMethod < ::Mail::TestMailer
     class << self
-      attr_accessor :filename
+      attr_accessor :posting_location
     end
 
     def self.start
@@ -29,13 +29,18 @@ module LetterStampMailDelivery
       defined?(::Rails) ? "#{::Rails.root}/tmp" : Dir.tmpdir
     end
 
+    def posting_location
+      self.class.posting_location
+    end
+
     def delivery_location
       settings[:delivery_location]
     end
 
     def generate_filename
-      if self.class.filename && delivery_location
-        "#{delivery_location}/#{self.class.filename}"
+      if posting_location && delivery_location
+        stem = posting_location.join('_')
+        "#{delivery_location}/#{stem}.eml"
       end
     end
 

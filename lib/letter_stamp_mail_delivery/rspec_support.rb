@@ -24,7 +24,7 @@ module LetterStampMailDelivery
       end
 
       def example_started(example)
-        ::LetterStampMailDelivery::DeliveryMethod.filename = generate_filename(example)
+        ::LetterStampMailDelivery::DeliveryMethod.posting_location = posting_location(example)
       end
 
       def example_passed(example)
@@ -41,13 +41,13 @@ module LetterStampMailDelivery
 
       private
 
-      def generate_filename(example)
+      def posting_location(example)
         spec_file, lineno = example.location.split(':')
-        "#{spec_file}_#{lineno}.eml"
+        [spec_file, lineno.to_i]
       end
 
       def example_finished
-        ::LetterStampMailDelivery::DeliveryMethod.filename = nil
+        ::LetterStampMailDelivery::DeliveryMethod.posting_location = nil
       end
     end
 

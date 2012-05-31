@@ -117,7 +117,7 @@ module LetterStampMailDelivery
       described_class.deliveries.first.should eq(mail)
     end
 
-    context "do not set filename" do
+    context "do not set posting_location" do
       include_context "setup and enter temporary directory"
       include_context "initialize with :delivery_location"
 
@@ -133,12 +133,12 @@ module LetterStampMailDelivery
       end
     end
 
-    context "filename is given" do
+    context "posting_location is given" do
       include_context "setup and enter temporary directory"
       include_context "initialize with :delivery_location"
 
       before :each do
-        DeliveryMethod.filename = "foo.eml"
+        DeliveryMethod.posting_location = ['foo_spec.rb', 42]
       end
 
       it "should save an email as a file" do
@@ -150,7 +150,7 @@ module LetterStampMailDelivery
         end
         mail.deliver
         Dir.glob("#{Dir.pwd}/tmp/mails/*").should have(1).item
-        File.should be_file("#{Dir.pwd}/tmp/mails/foo.eml")
+        File.should be_file("#{Dir.pwd}/tmp/mails/foo_spec.rb_42.eml")
       end
     end
   end

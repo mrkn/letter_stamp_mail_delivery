@@ -31,45 +31,45 @@ module LetterStampMailDelivery::RSpecSupport
       context "with an example located at foo_spec.rb:42" do
         let(:example) { double("example", :location => "foo_spec.rb:42") }
 
-        it "should set LetterStampMailerDelivery::DeliveryMethod.filename 'foo_spec.rb_42.eml'" do
+        it "should set LetterStampMailerDelivery::DeliveryMethod.posting_location ['foo_spec.rb', 42]" do
           subject.example_started(example)
-          ::LetterStampMailDelivery::DeliveryMethod.filename.should eq("foo_spec.rb_42.eml")
+          ::LetterStampMailDelivery::DeliveryMethod.posting_location.should eq(["foo_spec.rb", 42])
         end
       end
 
       context "with an example located at bar_spec.rb:17" do
         let(:example) { double("example", :location => "bar_spec.rb:17") }
 
-        it "should do LetterStampMailerDelivery::DeliveryMethod.filename = 'bar_spec.rb_16.eml'" do
+        it "should set LetterStampMailerDelivery::DeliveryMethod.posting_location ['bar_spec.rb', 16]" do
           subject.example_started(example)
-          ::LetterStampMailDelivery::DeliveryMethod.filename.should eq("bar_spec.rb_17.eml")
+          ::LetterStampMailDelivery::DeliveryMethod.posting_location.should eq(["bar_spec.rb", 17])
         end
       end
     end
 
-    shared_examples_for "LetterStampMailDelivery::DeliveryMethod.filename should be nil" do |method_name|
-      context "LetterStampMailDelivery::DeliveryMethod.filename is 'foo_spec.rb_42.eml'" do
+    shared_examples_for "LetterStampMailDelivery::DeliveryMethod.posting_location should be nil" do |method_name|
+      context "LetterStampMailDelivery::DeliveryMethod.posting_location is ['foo_spec.rb', 42]" do
         before :each do
-          ::LetterStampMailDelivery::DeliveryMethod.filename = 'foo_spec.rb_42.eml'
+          ::LetterStampMailDelivery::DeliveryMethod.posting_location = ['foo_spec.rb', 42]
         end
 
-        it "should do LetterStampMailDelivery::DeliveryMethod.filename = nil" do
+        it "should do LetterStampMailDelivery::DeliveryMethod.posting_location = nil" do
           subject.send(method_name, example)
-          ::LetterStampMailDelivery::DeliveryMethod.filename.should be_nil
+          ::LetterStampMailDelivery::DeliveryMethod.posting_location.should be_nil
         end
       end
     end
 
     describe "#example_passed" do
-      it_should_behave_like "LetterStampMailDelivery::DeliveryMethod.filename should be nil", :example_passed
+      it_should_behave_like "LetterStampMailDelivery::DeliveryMethod.posting_location should be nil", :example_passed
     end
 
     describe "#example_pending" do
-      it_should_behave_like "LetterStampMailDelivery::DeliveryMethod.filename should be nil", :example_pending
+      it_should_behave_like "LetterStampMailDelivery::DeliveryMethod.posting_location should be nil", :example_pending
     end
 
     describe "#example_failed" do
-      it_should_behave_like "LetterStampMailDelivery::DeliveryMethod.filename should be nil", :example_failed
+      it_should_behave_like "LetterStampMailDelivery::DeliveryMethod.posting_location should be nil", :example_failed
     end
   end
 end
