@@ -35,6 +35,17 @@ end
 
 Not supported yet.
 
+### with ActionMailer
+
+```ruby
+require 'letter_stamp_mail_delivery'
+require 'letter_stamp_mail_delivery/action_mailer_support'
+
+LetterStampMailDelivery::ActionMailerSupport.install
+
+ActionMailer::Base.delivery_method :letter_stamp
+```
+
 ## Contributing
 
 1. Fork it
