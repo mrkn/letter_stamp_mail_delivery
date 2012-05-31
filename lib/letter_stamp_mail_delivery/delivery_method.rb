@@ -9,6 +9,18 @@ module LetterStampMailDelivery
     end
 
     def self.start
+      @mail_counts = Hash.new(0)
+    end
+
+    def self.mail_count
+      @mail_counts[posting_location]
+    end
+
+    class << self
+      def increment_mail_count
+        @mail_counts[posting_location] += 1
+      end
+      private :increment_mail_count
     end
 
     def initialize(settings)
@@ -38,18 +50,21 @@ module LetterStampMailDelivery
     end
 
     def generate_filename
-      if posting_location && delivery_location
-        stem = posting_location.join('_')
-        "#{delivery_location}/#{stem}.eml"
-      end
+      stem = [posting_location, self.class.mail_count].flatten.join('_')
+      "#{delivery_location}/#{stem}.eml"
     end
 
     def save_raw_mail(raw_mail)
-      filename = generate_filename
-      return unless filename
+      if posting_location && delivery_location
+        increment_mail_count
+        filename = generate_filename
+        FileUtils.mkdir_p(File.dirname(filename))
+        open(filename, 'wb') {|io| io.write(raw_mail) }
+      end
+    end
 
-      FileUtils.mkdir_p(File.dirname(filename))
-      open(filename, 'wb') {|io| io.write(raw_mail) }
+    def increment_mail_count
+      self.class.send :increment_mail_count
     end
   end
 end

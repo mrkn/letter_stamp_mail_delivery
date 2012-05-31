@@ -43,6 +43,7 @@ module LetterStampMailDelivery
                                  :enable_starttls_auto => true,
                                  :openssl_verify_mode  => nil }
         DeliveryMethod.deliveries.clear
+        DeliveryMethod.start
       end
     end
 
@@ -141,16 +142,38 @@ module LetterStampMailDelivery
         DeliveryMethod.posting_location = ['foo_spec.rb', 42]
       end
 
-      it "should save an email as a file" do
-        mail = Mail.new do
+      let(:mail) do
+        Mail.new do
           to 'mikel@me.com'
           from 'you@you.com'
           subject 'testing'
           body 'hello'
         end
+      end
+
+      it "should save an email as a file named foo_spec.rb_42_1.eml" do
         mail.deliver
-        Dir.glob("#{Dir.pwd}/tmp/mails/*").should have(1).item
-        File.should be_file("#{Dir.pwd}/tmp/mails/foo_spec.rb_42.eml")
+        File.should be_file("#{Dir.pwd}/tmp/mails/foo_spec.rb_42_1.eml")
+      end
+
+      it "should save the second email as a file named foo_spec.rb_42_2.eml" do
+        2.times { mail.deliver }
+        File.should be_file("#{Dir.pwd}/tmp/mails/foo_spec.rb_42_2.eml")
+      end
+
+      it "should increment mail_count" do
+        expect { mail.deliver }.to change {
+          described_class.mail_count
+        }.by(1)
+      end
+
+      describe ".mail_count" do
+        it "should maintain for each posting_location" do
+          described_class.posting_location = ['foo_spec.rb', 42]
+          mail.deliver
+          described_class.posting_location = ['bar_spec.rb', 42]
+          described_class.mail_count.should eq(0)
+        end
       end
     end
   end
