@@ -53,3 +53,7 @@ ActionMailer::Base.delivery_method :letter_stamp
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Thanks
+
+- Ryo Nakamura (@r7kamura) for the name "Letter Stamp".
